@@ -165,7 +165,7 @@ func readFile(path string, jobs chan<- string, addLineNumber bool) {
 // the parser interface.
 func CreateFileParser() m.Parser {
 	goPath := path.Clean(os.Getenv("GOPATH"))
-	dataPath := goPath + "/src/github.com/antoineaugusti/modulus-checking/data/"
+	dataPath := goPath + "/src/github.com/AntoineAugusti/modulus-checking/data/"
 
 	return FileParser{
 		weightsPath:       dataPath + "weights.txt",
