@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/AntoineAugusti/modulus-checking/helpers"
-	m "github.com/AntoineAugusti/modulus-checking/models"
+	"github.com/AntoineAugusti/moduluschecking/helpers"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 const LINE_NUMBER_SEPARATOR = "/|\\[]"
@@ -165,7 +165,7 @@ func readFile(path string, jobs chan<- string, addLineNumber bool) {
 // the parser interface.
 func CreateFileParser() m.Parser {
 	goPath := path.Clean(os.Getenv("GOPATH"))
-	dataPath := goPath + "/src/github.com/AntoineAugusti/modulus-checking/data/"
+	dataPath := goPath + "/src/github.com/AntoineAugusti/moduluschecking/data/"
 
 	return FileParser{
 		weightsPath:       dataPath + "weights.txt",

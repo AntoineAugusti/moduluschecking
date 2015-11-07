@@ -3,7 +3,7 @@ package helpers
 import (
 	"strconv"
 
-	m "github.com/AntoineAugusti/modulus-checking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 // Merge the sort code and the account number of a

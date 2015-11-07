@@ -3,8 +3,8 @@ package resolvers
 import (
 	"testing"
 
-	m "github.com/AntoineAugusti/modulus-checking/models"
-	"github.com/AntoineAugusti/modulus-checking/parsers"
+	m "github.com/AntoineAugusti/moduluschecking/models"
+	"github.com/AntoineAugusti/moduluschecking/parsers"
 	"github.com/stretchr/testify/assert"
 )
 

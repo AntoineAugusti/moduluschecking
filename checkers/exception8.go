@@ -1,7 +1,7 @@
 package checkers
 
 import (
-	m "github.com/AntoineAugusti/modulus-checking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 // Perform the check for the exception 8

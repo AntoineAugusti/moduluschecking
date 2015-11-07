@@ -1,7 +1,7 @@
-[![Travis CI](https://img.shields.io/travis/AntoineAugusti/modulus-checking/master.svg?style=flat-square)](https://travis-ci.org/AntoineAugusti/modulus-checking)
-[![Software License](https://img.shields.io/badge/License-MIT-orange.svg?style=flat-square)](https://github.com/antoineaugusti/modulus-checking/LICENSE.md)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/AntoineAugusti/modulus-checking)
-[![Coverage Status](http://codecov.io/github/AntoineAugusti/modulus-checking/coverage.svg?branch=master)](http://codecov.io/github/AntoineAugusti/modulus-checking?branch=master)
+[![Travis CI](https://img.shields.io/travis/AntoineAugusti/moduluschecking/master.svg?style=flat-square)](https://travis-ci.org/AntoineAugusti/moduluschecking)
+[![Software License](https://img.shields.io/badge/License-MIT-orange.svg?style=flat-square)](https://github.com/AntoineAugusti/moduluschecking/LICENSE.md)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/AntoineAugusti/moduluschecking)
+[![Coverage Status](http://codecov.io/github/AntoineAugusti/moduluschecking/coverage.svg?branch=master)](http://codecov.io/github/AntoineAugusti/moduluschecking?branch=master)
 
 ## Modulus checking
 Modulus checking is a procedure for validating sort code and account number combinations. It doesn't confirm that an account belongs to a customer or supports Direct Debit.
@@ -17,7 +17,7 @@ This package ships with the latest version of the modulus weight table data and 
 ## Getting started
 You can grab this package with the following command:
 ```
-go get github.com/antoineaugusti/modulus-checking
+go get github.com/AntoineAugusti/moduluschecking/...
 ```
 
 ## Usage
@@ -28,9 +28,9 @@ package main
 import (
     "fmt"
 
-    "github.com/AntoineAugusti/modulus-checking/models"
-    "github.com/AntoineAugusti/modulus-checking/parsers"
-    "github.com/AntoineAugusti/modulus-checking/resolvers"
+    "github.com/AntoineAugusti/moduluschecking/models"
+    "github.com/AntoineAugusti/moduluschecking/parsers"
+    "github.com/AntoineAugusti/moduluschecking/resolvers"
 )
 
 func main() {
