@@ -5,9 +5,17 @@ import (
 	m "github.com/AntoineAugusti/modulus-checking/models"
 )
 
-// Check if a bank account matches the criteria of the exception 6
-func Exception6(b m.BankAccount) bool {
-	return isForeignCurrency(b)
+// Perform the check for the exception 6
+func PerformException6Check(b m.BankAccount, scData m.SortCodeData) bool {
+	if !scData.IsException(6) {
+		panic("Should be exception of type 6")
+	}
+
+	if isForeignCurrency(b) {
+		return true
+	}
+
+	return PerformRegularCheck(b, scData)
 }
 
 // Check if a bank account is in a foreign currency
