@@ -11,7 +11,7 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-const LINE_NUMBER_SEPARATOR = "/|\\[]"
+const LINE_NUMBER_SEPARATOR = "¯\\_(ツ)_/¯"
 
 // A parser that reads data from the filesystem.
 type FileParser struct {
