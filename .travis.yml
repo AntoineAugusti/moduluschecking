@@ -1,12 +1,12 @@
 language: go
 before_install:
   - go get golang.org/x/tools/cmd/vet
-  - go get github.com/onsi/gomega
-  - go get github.com/onsi/ginkgo
+  - go get github.com/modocache/gover
   - go get github.com/AntoineAugusti/modulus-checking
 script:
   - go vet github.com/AntoineAugusti/modulus-checking...
   - go test -v ./...
-  - go test -coverprofile=coverage.txt -covermode=atomic
+  - go list -f '{{if len .TestGoFiles}}"go test -coverprofile={{.Dir}}/.coverprofile {{.ImportPath}}"{{end}}' ./... | xargs -i sh -c {}
+  - gover . coverprofile.txt
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -f coverprofile.txt
