@@ -3,7 +3,7 @@ package helpers
 import (
 	"testing"
 
-	m "github.com/AntoineAugusti/modulus-checking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 	"github.com/stretchr/testify/assert"
 )
 
