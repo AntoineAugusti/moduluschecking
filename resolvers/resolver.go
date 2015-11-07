@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"github.com/AntoineAugusti/modulus-checking/checkers"
-	"github.com/AntoineAugusti/modulus-checking/helpers"
 	m "github.com/AntoineAugusti/modulus-checking/models"
 )
 
@@ -19,7 +18,7 @@ func (r Resolver) IsValid(b m.BankAccount) bool {
 	// First check
 	firstCheck := r.checkForSortCodeData(b, scData, 1)
 
-	if checkers.Exception3(b) {
+	if checkers.FollowsException3(b, scData) {
 		return firstCheck
 	}
 
@@ -41,6 +40,7 @@ func (r Resolver) IsValid(b m.BankAccount) bool {
 		secondCheck = r.checkForSortCodeData(b, *scData.Next, 2)
 	}
 
+	// Some sort code require only one of the 2 checks to be successful
 	if scData.FollowsExceptions(2, 9) || scData.FollowsExceptions(10, 11) || scData.FollowsExceptions(12, 13) {
 		return firstCheck || secondCheck
 	}
@@ -48,101 +48,34 @@ func (r Resolver) IsValid(b m.BankAccount) bool {
 	return firstCheck && secondCheck
 }
 
+// Perform the check for a bank account and a given attempt.
 func (r Resolver) checkForSortCodeData(b m.BankAccount, scData m.SortCodeData, attempt int) bool {
 	if scData.HasException() {
 		switch {
 		case scData.IsException(1):
-			return checkers.DoubleAlternate(b, scData, 27) == 0
+			return checkers.PerformException1Check(b, scData)
 		case scData.IsException(2):
-			scData.Weights = checkers.WeightsForException2Or9(b, scData)
-			return performRegularCheck(b, scData)
+			return checkers.PerformException2Check(b, scData)
 		case scData.IsException(4):
-			g := helpers.LetterToNumber(b, "g")
-			h := helpers.LetterToNumber(b, "h")
-			checkDigit := g*10 + h
-			return remainderFromRegularCheck(b, scData) == checkDigit
+			return checkers.PerformException4Check(b, scData)
 		case scData.IsException(5):
-			if substitution, hasKey := r.substitutions[b.SortCode]; hasKey {
-				b.SortCode = substitution
-			}
-			if attempt == 1 {
-				checkDigit := helpers.LetterToNumber(b, "g")
-				remainder := remainderFromRegularCheck(b, scData)
-				if remainder == 0 && checkDigit == 0 {
-					return true
-				}
-				if remainder == 1 {
-					return false
-				}
-				return (11 - remainder) == checkDigit
-			} else {
-				checkDigit := helpers.LetterToNumber(b, "h")
-				remainder := remainderFromRegularCheck(b, scData)
-				if remainder == 0 && checkDigit == 0 {
-					return true
-				}
-				return (10 - remainder) == checkDigit
-			}
+			return checkers.PerformException5Check(b, scData, r.substitutions, attempt)
 		case scData.IsException(6):
-			if isForeignCurrency := checkers.Exception6(b); isForeignCurrency {
-				return true
-			}
+			return checkers.PerformException6Check(b, scData)
 		case scData.IsException(7):
-			if checkers.Exception7(b) {
-				zeros := []int{0, 0, 0, 0, 0, 0, 0, 0}
-				scData.Weights = append(zeros, scData.Weights[8:]...)
-				return performRegularCheck(b, scData)
-			}
+			return checkers.PerformException7Check(b, scData)
 		case scData.IsException(8):
-			b.SortCode = "090126"
-			return performRegularCheck(b, scData)
+			return checkers.PerformException8Check(b, scData)
 		case scData.IsException(9):
-			scData.Weights = checkers.WeightsForException2Or9(b, scData)
-			if performRegularCheck(b, scData) {
-				return true
-			}
-			// Try to replace the sort code
-			b.SortCode = "309634"
-			res := performRegularCheck(b, r.weights[b.SortCode])
-			return res
+			return checkers.PerformException9Check(b, scData, r.weights)
 		case scData.IsException(10):
-			if checkers.Exception10(b) {
-				zeros := []int{0, 0, 0, 0, 0, 0, 0, 0}
-				scData.Weights = append(zeros, scData.Weights[8:]...)
-				return performRegularCheck(b, scData)
-			}
+			return checkers.PerformException10Check(b, scData)
 		case scData.IsException(14):
-			if attempt == 2 {
-				h := helpers.LetterToNumber(b, "h")
-				if h >= 2 && h <= 8 {
-					return false
-				}
-				b.AccountNumber = "0" + b.AccountNumber[0:len(b.AccountNumber)-1]
-				return performRegularCheck(b, scData)
-			}
+			return checkers.PerformException14Check(b, scData, attempt)
 		}
 	}
 
-	return performRegularCheck(b, scData)
-}
-
-func performRegularCheck(b m.BankAccount, scData m.SortCodeData) bool {
-	return remainderFromRegularCheck(b, scData) == 0
-}
-
-func remainderFromRegularCheck(b m.BankAccount, scData m.SortCodeData) int {
-	switch {
-	case scData.Algorithm == "DBLAL":
-		return checkers.DoubleAlternate(b, scData, 0)
-	case scData.Algorithm == "MOD11":
-		remainder := checkers.Modulus(b, 11, scData)
-		return remainder
-	case scData.Algorithm == "MOD10":
-		remainder := checkers.Modulus(b, 10, scData)
-		return remainder
-	}
-
-	panic("Should have algo")
+	return checkers.PerformRegularCheck(b, scData)
 }
 
 // Construct a new Resolver and automatically read the
