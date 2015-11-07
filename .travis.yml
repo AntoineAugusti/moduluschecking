@@ -1,11 +1,14 @@
 language: go
 before_install:
   - go get golang.org/x/tools/cmd/vet
-  - go get github.com/modocache/gover
+  - go get github.com/onsi/gomega
+  - go get github.com/onsi/ginkgo
   - go get github.com/AntoineAugusti/modulus-checking
 script:
   - go vet github.com/AntoineAugusti/modulus-checking...
   - go test -v ./...
-  - gover . coverprofile.txt
+  - go test -coverprofile=coverage.txt -covermode=atomic
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -f coverprofile.txt
+  - bash <(curl -s https://codecov.io/bash)
+before_install:
+  - go get code.google.com/p/go.tools/cmd/cover
