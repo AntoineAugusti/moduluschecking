@@ -54,3 +54,8 @@ func main() {
     fmt.Println(resolver.IsValid(bankAccount))
 }
 ```
+
+## Benchmark
+On my personal laptop (MacBook Pro, Core i5 2.5 Ghz, 8 GB of RAM with a SSD):
+- reading data files from the filesytem by creating the parser and the resolver: ~350 ms
+- checking the validity of 1,000 bank account numbers: ~ 7 ms
