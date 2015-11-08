@@ -1,7 +1,6 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
@@ -12,7 +11,7 @@ func PerformException14Check(b m.BankAccount, scData m.SortCodeData, attempt int
 	}
 
 	if attempt == 2 {
-		h := helpers.LetterToNumber(b, "h")
+		h := b.NumberAtPosition("h")
 		if h >= 2 && h <= 8 {
 			return false
 		}

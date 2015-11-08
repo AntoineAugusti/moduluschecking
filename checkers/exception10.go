@@ -1,7 +1,6 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
@@ -23,9 +22,9 @@ func PerformException10Check(b m.BankAccount, scData m.SortCodeData) bool {
 // Check if a bank account matches the criteria of the exception 10
 func isException10(account m.BankAccount) bool {
 	// if ab = 09 or ab = 99 and g = 9
-	a := helpers.LetterToNumber(account, "a")
-	b := helpers.LetterToNumber(account, "b")
-	g := helpers.LetterToNumber(account, "g")
+	a := account.NumberAtPosition("a")
+	b := account.NumberAtPosition("b")
+	g := account.NumberAtPosition("g")
 
 	return (a == 0 || a == 9) && b == 9 && g == 9
 }

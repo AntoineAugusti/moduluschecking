@@ -1,7 +1,6 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
@@ -11,8 +10,8 @@ func PerformException4Check(b m.BankAccount, scData m.SortCodeData) bool {
 		panic("Should be exception of type 4")
 	}
 
-	g := helpers.LetterToNumber(b, "g")
-	h := helpers.LetterToNumber(b, "h")
+	g := b.NumberAtPosition("g")
+	h := b.NumberAtPosition("h")
 	checkDigit := g*10 + h
 
 	return RemainderFromRegularCheck(b, scData) == checkDigit

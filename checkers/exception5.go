@@ -1,7 +1,6 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
@@ -17,7 +16,7 @@ func PerformException5Check(b m.BankAccount, scData m.SortCodeData, substitution
 
 	// First attempt
 	if attempt == 1 {
-		checkDigit := helpers.LetterToNumber(b, "g")
+		checkDigit := b.NumberAtPosition("g")
 		remainder := RemainderFromRegularCheck(b, scData)
 		if remainder == 0 && checkDigit == 0 {
 			return true
@@ -29,7 +28,7 @@ func PerformException5Check(b m.BankAccount, scData m.SortCodeData, substitution
 	}
 
 	// Second attempt
-	checkDigit := helpers.LetterToNumber(b, "h")
+	checkDigit := b.NumberAtPosition("h")
 	remainder := RemainderFromRegularCheck(b, scData)
 	if remainder == 0 && checkDigit == 0 {
 		return true
