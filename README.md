@@ -42,7 +42,7 @@ func main() {
     // bank accounts according to the data obtained by the parser
     resolver := resolvers.NewResolver(parser)
 
-    // This helper method handle special cases for
+    // This helper method handles special cases for
     // bank accounts from:
     // - National Westminster Bank plc (10 or 11 digits with possible presence of dashes, for account numbers)
     // - Co-Operative Bank plc (10 digits for account numbers)
