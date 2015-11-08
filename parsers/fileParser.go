@@ -4,14 +4,19 @@ import (
 	"bufio"
 	"os"
 	"path"
-	"strconv"
 	"strings"
 
 	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-const LINE_NUMBER_SEPARATOR = "¯\\_(ツ)_/¯"
+// Describes the content of a file.
+type LineRecord struct {
+	// The content of a line in the file
+	content string
+	// The line number in the file
+	lineNumber int
+}
 
 // A parser that reads data from the filesystem.
 type FileParser struct {
@@ -27,13 +32,11 @@ type FileParser struct {
 func (fp FileParser) Substitutions() map[string]string {
 	substitutions := make(map[string]string)
 
-	lines := make(chan string)
-	go func() {
-		readFile(fp.substitutionsPath, lines, false)
-	}()
+	jobs := make(chan LineRecord)
+	go readFile(fp.substitutionsPath, jobs)
 
-	for line := range lines {
-		fields := strings.Split(line, " ")
+	for lineRecord := range jobs {
+		fields := strings.Split(lineRecord.content, " ")
 		key, value := fields[0], fields[1]
 		substitutions[key] = value
 	}
@@ -43,10 +46,10 @@ func (fp FileParser) Substitutions() map[string]string {
 
 // Get the weights, exception information and algorithm to use for all known sort codes.
 func (fp FileParser) Weights() map[string]m.SortCodeData {
-	jobs := make(chan string)
+	jobs := make(chan LineRecord)
 	results := make(chan m.SortCodeRange)
 
-	go readFile(fp.weightsPath, jobs, true)
+	go readFile(fp.weightsPath, jobs)
 	go parseWeightsLine(jobs, results)
 
 	// Process all the sort code ranges
@@ -95,14 +98,11 @@ func (fp *FileParser) addSortCodeRange(scRange m.SortCodeRange) {
 
 // Parse lines from the weights file and put the result
 // as a SortCodeRange structure in a channel.
-func parseWeightsLine(jobs <-chan string, results chan<- m.SortCodeRange) {
+func parseWeightsLine(jobs <-chan LineRecord, results chan<- m.SortCodeRange) {
 	var fields []string
 
-	for line := range jobs {
-		tmp := strings.Split(line, LINE_NUMBER_SEPARATOR)
-		// Extract the line number in the file because we
-		// need to conserve the order of the data
-		lineNumber, data := helpers.ToInt(tmp[0]), tmp[1]
+	for lineRecord := range jobs {
+		lineNumber, data := lineRecord.lineNumber, lineRecord.content
 		fields = strings.Split(data, ",")
 		// Sort code range
 		sortCodeStart, sortCodeEnd := helpers.ToInt(fields[0]), helpers.ToInt(fields[1])
@@ -134,10 +134,8 @@ func parseWeightsLine(jobs <-chan string, results chan<- m.SortCodeRange) {
 	close(results)
 }
 
-// Read a file and put the content in a channel. We can add the line number
-// to each line, if we the order of the file is important. If the boolean is set to true
-// each line will be formatted as: <lineNumber>LINE_NUMBER_SEPARATOR<lineData>
-func readFile(path string, jobs chan<- string, addLineNumber bool) {
+// Read a file and put the content in a channel.
+func readFile(path string, jobs chan<- LineRecord) {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -148,13 +146,11 @@ func readFile(path string, jobs chan<- string, addLineNumber bool) {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		txt := scanner.Text()
-		if addLineNumber {
-			jobs <- strconv.Itoa(lineNumber) + LINE_NUMBER_SEPARATOR + txt
-			lineNumber += 1
-		} else {
-			jobs <- txt
+		jobs <- LineRecord{
+			content:    scanner.Text(),
+			lineNumber: lineNumber,
 		}
+		lineNumber += 1
 	}
 
 	// We are done with the file, release the channel
