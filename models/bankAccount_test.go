@@ -52,6 +52,8 @@ func TestNumberAtPosition(t *testing.T) {
 	assert.Equal(t, 6, b.NumberAtPosition("f"))
 	assert.Equal(t, 7, b.NumberAtPosition("g"))
 	assert.Equal(t, 8, b.NumberAtPosition("h"))
+
+	assert.Panics(t, func() { b.NumberAtPosition("i") }, "Should panic when letter is not supported")
 }
 
 func TestCreateBankAccount(t *testing.T) {

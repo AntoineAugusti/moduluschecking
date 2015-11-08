@@ -8,8 +8,12 @@ import (
 
 func TestAddDigits(t *testing.T) {
 	assert.Equal(t, 3, AddDigits(12))
-	assert.Equal(t, 18, AddDigits(99))
 	assert.Equal(t, 1, AddDigits(1))
+	assert.Equal(t, 18, AddDigits(99))
+	assert.Equal(t, 0, AddDigits(0))
+
+	assert.Panics(t, func() { AddDigits(100) }, "Should panic for numbers over 99")
+	assert.Panics(t, func() { AddDigits(-1) }, "Should panic for numbers under 0")
 }
 
 func TestAddLeadingZerosToNumber(t *testing.T) {
@@ -25,6 +29,8 @@ func TestAddLeadingZeros(t *testing.T) {
 
 func TestToInt(t *testing.T) {
 	assert.Equal(t, 1, ToInt("1"))
+
+	assert.Panics(t, func() { ToInt("a") }, "Should panic when string cannot be converted")
 }
 
 func TestStringToIntSlice(t *testing.T) {
