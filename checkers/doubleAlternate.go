@@ -8,7 +8,7 @@ import (
 // Perform the double alternate algorithm and return
 // the remainder of the operation
 func DoubleAlternate(b m.BankAccount, data m.SortCodeData, sum int) (remainder int) {
-	numbers := helpers.MergeBankAccountDetails(b)
+	numbers := b.MergeAccountDetails()
 
 	weight := data.Weights
 	for i, nb := range numbers {

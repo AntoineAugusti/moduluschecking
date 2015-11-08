@@ -1,13 +1,12 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 // Check if we follow the criteria of the exception 3
 func FollowsException3(b m.BankAccount, scData m.SortCodeData) bool {
-	c := helpers.LetterToNumber(b, "c")
+	c := b.NumberAtPosition("c")
 
 	hasNextAnd3 := scData.HasNext() && scData.Next.IsException(3)
 

@@ -71,7 +71,7 @@ func (fp *FileParser) addSortCodeRange(scRange m.SortCodeRange) {
 	// a map to decrease lookup time later. This requires a larger amount of
 	// memory, but it seems worth it.
 	for sortCode := scRange.Start; sortCode <= scRange.End; sortCode++ {
-		key := helpers.AddLeadingZeros(sortCode)
+		key := helpers.AddLeadingZerosToNumber(sortCode)
 		val, exist := fp.weights[key]
 		if !exist {
 			fp.weights[key] = scData

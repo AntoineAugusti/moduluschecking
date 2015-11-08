@@ -1,7 +1,6 @@
 package checkers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
@@ -11,8 +10,8 @@ func WeightsForException2Or9(b m.BankAccount, sc m.SortCodeData) (weights []int)
 		panic("Expected exception 2 or exception 9 sort code")
 	}
 
-	a := helpers.LetterToNumber(b, "a")
-	g := helpers.LetterToNumber(b, "g")
+	a := b.NumberAtPosition("a")
+	g := b.NumberAtPosition("g")
 
 	// Default weights
 	weights = sc.Weights
