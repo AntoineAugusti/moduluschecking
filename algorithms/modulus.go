@@ -9,10 +9,10 @@ import (
 func Modulus(b m.BankAccount, modulus int, data m.SortCodeData) (remainder int) {
 	numbers := b.MergeAccountDetails()
 	sum := 0
-	weight := data.Weights
+	weights := data.Weights
 
 	for i, nb := range numbers {
-		sum += weight[i] * nb
+		sum += weights[i] * nb
 	}
 
 	remainder = sum % modulus

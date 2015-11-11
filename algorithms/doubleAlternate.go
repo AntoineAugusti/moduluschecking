@@ -10,9 +10,9 @@ import (
 func DoubleAlternate(b m.BankAccount, data m.SortCodeData, sum int) (remainder int) {
 	numbers := b.MergeAccountDetails()
 
-	weight := data.Weights
+	weights := data.Weights
 	for i, nb := range numbers {
-		sum += helpers.AddDigits(weight[i] * nb)
+		sum += helpers.AddDigits(weights[i] * nb)
 	}
 
 	remainder = sum % 10
