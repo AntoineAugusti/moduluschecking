@@ -4,18 +4,28 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 9
-func PerformException9Check(b m.BankAccount, scData m.SortCodeData, weights map[string]m.SortCodeData) bool {
-	if !scData.IsException(9) {
+type Exception9Checker struct {
+	Weights map[string]m.SortCodeData
+}
+
+// Determine if the checker is able to validate the bank account
+func (e Exception9Checker) Handles(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	return sc.IsException(9)
+}
+
+// Tell if the bank account is valid
+func (e Exception9Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
 		panic("Should be exception of type 9")
 	}
 
-	scData.Weights = WeightsForException2Or9(b, scData)
-	if PerformRegularCheck(b, scData) {
+	sc.Weights = WeightsForException2Or9(b, sc)
+	if (GeneralChecker{}.IsValid(b, sc, attempt)) {
 		return true
 	}
 
 	// Try to replace the sort code
 	b.SortCode = "309634"
-	return PerformRegularCheck(b, weights[b.SortCode])
+
+	return GeneralChecker{}.IsValid(b, e.Weights[b.SortCode], attempt)
 }

@@ -4,12 +4,21 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 2
-func PerformException2Check(b m.BankAccount, scData m.SortCodeData) bool {
-	if !scData.IsException(2) {
+type Exception2Checker struct {
+}
+
+// Determine if the checker is able to validate the bank account
+func (e Exception2Checker) Handles(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	return sc.IsException(2)
+}
+
+// Tell if the bank account is valid
+func (e Exception2Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
 		panic("Should be exception of type 2")
 	}
 
-	scData.Weights = WeightsForException2Or9(b, scData)
-	return PerformRegularCheck(b, scData)
+	sc.Weights = WeightsForException2Or9(b, sc)
+
+	return GeneralChecker{}.IsValid(b, sc, attempt)
 }

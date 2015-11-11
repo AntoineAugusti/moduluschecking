@@ -1,4 +1,4 @@
-package checkers
+package algorithms
 
 import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
