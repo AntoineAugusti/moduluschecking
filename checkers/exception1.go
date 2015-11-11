@@ -1,14 +1,23 @@
 package checkers
 
 import (
+	"github.com/AntoineAugusti/moduluschecking/algorithms"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 1
-func PerformException1Check(b m.BankAccount, scData m.SortCodeData) bool {
-	if !scData.IsException(1) {
+type Exception1Checker struct {
+}
+
+// Determine if the checker is able to validate the bank account
+func (e Exception1Checker) Handles(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	return sc.IsException(1)
+}
+
+// Tell if the bank account is valid
+func (e Exception1Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
 		panic("Should be exception of type 1")
 	}
 
-	return DoubleAlternate(b, scData, 27) == 0
+	return algorithms.DoubleAlternate(b, sc, 27) == 0
 }

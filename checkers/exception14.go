@@ -4,20 +4,27 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 14
-func PerformException14Check(b m.BankAccount, scData m.SortCodeData, attempt int) bool {
-	if !scData.IsException(14) {
-		panic("Should be exception of type 14")
+type Exception14Checker struct {
+}
+
+// Determine if the checker is able to validate the bank account
+func (e Exception14Checker) Handles(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	return sc.IsException(14) && attempt == 2
+}
+
+// Tell if the bank account is valid
+func (e Exception14Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
+		panic("Should be exception of type 14 at attempt 2")
 	}
 
-	if attempt == 2 {
-		h := b.NumberAtPosition("h")
-		if h >= 2 && h <= 8 {
-			return false
-		}
-		b.AccountNumber = "0" + b.AccountNumber[0:len(b.AccountNumber)-1]
-		return PerformRegularCheck(b, scData)
+	h := b.NumberAtPosition("h")
+	if h >= 2 && h <= 8 {
+		return false
 	}
+	// Remove the 1st digit from the accout number and insert a 0
+	// as the 1st digit for check purposes
+	b.AccountNumber = "0" + b.AccountNumber[0:len(b.AccountNumber)-1]
 
-	return PerformRegularCheck(b, scData)
+	return GeneralChecker{}.IsValid(b, sc, attempt)
 }

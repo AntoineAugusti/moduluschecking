@@ -4,21 +4,29 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 6
-func PerformException6Check(b m.BankAccount, scData m.SortCodeData) bool {
-	if !scData.IsException(6) {
+type Exception6Checker struct {
+}
+
+// Determine if the checker is able to validate the bank account
+func (e Exception6Checker) Handles(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	return sc.IsException(6)
+}
+
+// Tell if the bank account is valid
+func (e Exception6Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
 		panic("Should be exception of type 6")
 	}
 
-	if isForeignCurrency(b) {
+	if e.isForeignCurrency(b) {
 		return true
 	}
 
-	return PerformRegularCheck(b, scData)
+	return GeneralChecker{}.IsValid(b, sc, attempt)
 }
 
 // Check if a bank account is in a foreign currency
-func isForeignCurrency(b m.BankAccount) bool {
+func (e Exception6Checker) isForeignCurrency(b m.BankAccount) bool {
 	// if a = 4, 5, 6, 7 or 8, and g and h are the same,
 	// the accounts are for a foreign currency and the checks cannot be used
 	a := b.NumberAtPosition("a")

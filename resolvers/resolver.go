@@ -6,8 +6,12 @@ import (
 )
 
 type Resolver struct {
-	weights       map[string]m.SortCodeData
+	// Associate a sort code to its data
+	weights map[string]m.SortCodeData
+	// Sort code substitutions map
 	substitutions map[string]string
+	// Associate an exception ID to a specific checker
+	exceptionCheckers map[int]m.Checker
 }
 
 // Check if a bank account number is valid
@@ -50,40 +54,42 @@ func (r Resolver) IsValid(b m.BankAccount) bool {
 
 // Perform the check for a bank account and a given attempt.
 func (r Resolver) checkForSortCodeData(b m.BankAccount, scData m.SortCodeData, attempt int) bool {
+	// If the sort code follows an exception
 	if scData.HasException() {
-		switch {
-		case scData.IsException(1):
-			return checkers.PerformException1Check(b, scData)
-		case scData.IsException(2):
-			return checkers.PerformException2Check(b, scData)
-		case scData.IsException(4):
-			return checkers.PerformException4Check(b, scData)
-		case scData.IsException(5):
-			return checkers.PerformException5Check(b, scData, r.substitutions, attempt)
-		case scData.IsException(6):
-			return checkers.PerformException6Check(b, scData)
-		case scData.IsException(7):
-			return checkers.PerformException7Check(b, scData)
-		case scData.IsException(8):
-			return checkers.PerformException8Check(b, scData)
-		case scData.IsException(9):
-			return checkers.PerformException9Check(b, scData, r.weights)
-		case scData.IsException(10):
-			return checkers.PerformException10Check(b, scData)
-		case scData.IsException(14):
-			return checkers.PerformException14Check(b, scData, attempt)
+		// Try to find a checker for this specific exception
+		if checkerFound, hasKey := r.exceptionCheckers[scData.ExceptionValue]; hasKey {
+			// Check that this checker can actually handle this case
+			if checkerFound.Handles(b, scData, attempt) {
+				// Validate the bank account number
+				return checkerFound.IsValid(b, scData, attempt)
+			}
 		}
 	}
 
-	return checkers.PerformRegularCheck(b, scData)
+	// General case
+	return checkers.GeneralChecker{}.IsValid(b, scData, attempt)
 }
 
 // Construct a new Resolver and automatically read the
 // initialization files
 func NewResolver(parser m.Parser) Resolver {
+	weights, substitutions := parser.Weights(), parser.Substitutions()
+
 	resolver := Resolver{
-		weights:       parser.Weights(),
-		substitutions: parser.Substitutions(),
+		weights:       weights,
+		substitutions: substitutions,
+		exceptionCheckers: map[int]m.Checker{
+			1:  checkers.Exception1Checker{},
+			2:  checkers.Exception2Checker{},
+			4:  checkers.Exception4Checker{},
+			5:  checkers.Exception5Checker{Substitutions: substitutions},
+			6:  checkers.Exception6Checker{},
+			7:  checkers.Exception7Checker{},
+			8:  checkers.Exception8Checker{},
+			9:  checkers.Exception9Checker{Weights: weights},
+			10: checkers.Exception10Checker{},
+			14: checkers.Exception14Checker{},
+		},
 	}
 
 	return resolver

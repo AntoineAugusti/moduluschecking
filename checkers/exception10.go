@@ -4,27 +4,33 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Perform the check for the exception 10
-func PerformException10Check(b m.BankAccount, scData m.SortCodeData) bool {
-	if !scData.IsException(10) {
-		panic("Should be exception of type 10")
-	}
-
-	if isException10(b) {
-		zeros := []int{0, 0, 0, 0, 0, 0, 0, 0}
-		scData.Weights = append(zeros, scData.Weights[8:]...)
-		return PerformRegularCheck(b, scData)
-	}
-
-	return PerformRegularCheck(b, scData)
+type Exception10Checker struct {
 }
 
-// Check if a bank account matches the criteria of the exception 10
-func isException10(account m.BankAccount) bool {
+// Determine if the checker is able to validate the bank account
+func (e Exception10Checker) Handles(account m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !sc.IsException(10) {
+		return false
+	}
+
 	// if ab = 09 or ab = 99 and g = 9
 	a := account.NumberAtPosition("a")
 	b := account.NumberAtPosition("b")
 	g := account.NumberAtPosition("g")
 
 	return (a == 0 || a == 9) && b == 9 && g == 9
+}
+
+// Tell if the bank account is valid
+func (e Exception10Checker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int) bool {
+	if !e.Handles(b, sc, attempt) {
+		panic("Should be exception of type 10")
+	}
+
+	// Put 8 zeros at the beginning of the weights
+	// and keep the original weights after
+	zeros := []int{0, 0, 0, 0, 0, 0, 0, 0}
+	sc.Weights = append(zeros, sc.Weights[8:]...)
+
+	return GeneralChecker{}.IsValid(b, sc, attempt)
 }
