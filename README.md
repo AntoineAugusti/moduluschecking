@@ -9,7 +9,7 @@ Modulus checking is a procedure for validating sort code and account number comb
 If you want to know more about modulus checking, read this [GoCardless guide](https://gocardless.com/guides/posts/modulus-checking/).
 
 ## Validity
-This package follows the Vocalink specification, version 3.50, that will be live on 7/12/2015. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
+This package follows the Vocalink specification, version 3.70, that will be live on 15/02/2016. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
 
 ## Included data files
 This package ships with the latest version of the modulus weight table data and the sorting code substitution data. Both files can be found in the `data` folder.
