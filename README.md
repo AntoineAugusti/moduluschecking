@@ -9,7 +9,7 @@ Modulus checking is a procedure for validating sort code and account number comb
 If you want to know more about modulus checking, read this [GoCardless guide](https://gocardless.com/guides/posts/modulus-checking/).
 
 ## Validity
-This package follows the Vocalink specification, version 3.90, that will be live on 13/06/2016. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
+This package follows the Vocalink specification, version 4.00, that will be live on 09/01/2017. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
 
 ## API
 If you prefer to send request to a web service, take a look at the package [moduluschecking-api](https://github.com/AntoineAugusti/moduluschecking-api) that offers an API to validate UK bank account numbers, supporting authentication and rate limits.
@@ -28,7 +28,7 @@ The following institutions are supported:
 | Northern | Orwell Union Ltd | Royal Bank of Scotland |
 | Santander | Secure Trust | Tesco Bank |
 | TSB | Ulster Bank | Unity Trust Bank |
-| Virgin Bank | Woolwich | Williams & Glyn |
+| Virgin Bank | Woolwich | Starling Bank |
 | Yorkshire Bank | - | - |
 
 ## Included data files

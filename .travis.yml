@@ -6,12 +6,13 @@ matrix:
     - go: 1.4
     - go: 1.5
     - go: 1.6
+    - go: 1.7
     - go: tip
   allow_failures:
     - go: tip
 
 script:
   - go get -t -v $(go list ./...)
-  - if [[ $TRAVIS_GO_VERSION == 1.6* ]]; then diff -u <(echo -n) <(gofmt -d .); fi
-  - if [[ $TRAVIS_GO_VERSION == 1.6* ]]; then go vet $(go list ./...); fi
+  - if [[ $TRAVIS_GO_VERSION == 1.7* ]]; then diff -u <(echo -n) <(gofmt -d .); fi
+  - if [[ $TRAVIS_GO_VERSION == 1.7* ]]; then go vet $(go list ./...); fi
   - go test -v -race $(go list ./...)
