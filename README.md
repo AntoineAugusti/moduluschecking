@@ -9,7 +9,7 @@ Modulus checking is a procedure for validating sort code and account number comb
 If you want to know more about modulus checking, read this [GoCardless guide](https://gocardless.com/guides/posts/modulus-checking/).
 
 ## Validity
-This package follows the Vocalink specification, version 4.00, that will be live on 09/01/2017. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
+This package follows the Vocalink specification, version 4.10, that will be live on 06/03/2017. More information about the specification can be seen on the [Vocalink website](https://www.vocalink.com/customer-support/modulus-checking).
 
 ## API
 If you prefer to send request to a web service, take a look at the package [moduluschecking-api](https://github.com/AntoineAugusti/moduluschecking-api) that offers an API to validate UK bank account numbers, supporting authentication and rate limits.
@@ -17,19 +17,39 @@ If you prefer to send request to a web service, take a look at the package [modu
 ## Institution covered
 The following institutions are supported:
 
-| Institution name | Institution name | Institution name |
-| :-------------: |:-------------:| :-----:|
-| Allied Irish | Bank of England | Bank of Ireland |
-| Bank of Scotland | Barclays | Bradford and Bingley Building Society |
-| Charity Bank | Citibank | Clydesdale |
-| Co-Operative Bank | Coutts | First Trust |
-| Halifax | Hoares Bank | HSBC | Lloyds |
-| Metro Bank | NatWest | Nationwide Building Society |
-| Northern | Orwell Union Ltd | Royal Bank of Scotland |
-| Santander | Secure Trust | Tesco Bank |
-| TSB | Ulster Bank | Unity Trust Bank |
-| Virgin Bank | Woolwich | Starling Bank |
-| Yorkshire Bank | - | - |
+- Allied Irish
+- Bank of England
+- Bank of Ireland
+- Bank of Scotland
+- Barclays
+- Bradford and Bingley Building Society
+- Charity Bank
+- Citibank
+- Clydesdale
+- Co-Operative Bank
+- Contis Financial Services
+- Coutts
+- First Trust
+- Halifax
+- Hoares Bank
+- HSBC
+- Lloyds
+- Metro Bank
+- Nationwide Building Society
+- NatWest
+- Northern
+- Orwell Union Ltd
+- Royal Bank of Scotland
+- Santander
+- Secure Trust
+- Starling Bank
+- Tesco Bank
+- TSB
+- Ulster Bank
+- Unity Trust Bank
+- Virgin Bank
+- Woolwich
+- Yorkshire Bank
 
 ## Included data files
 This package ships with the latest version of the modulus weight table data and the sorting code substitution data. Both files can be found in the `data` folder.
