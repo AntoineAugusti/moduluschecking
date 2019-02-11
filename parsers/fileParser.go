@@ -6,6 +6,7 @@ import (
 	"path"
 	"strings"
 
+	_ "github.com/AntoineAugusti/moduluschecking/data"
 	"github.com/AntoineAugusti/moduluschecking/helpers"
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
