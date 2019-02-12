@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/helpers"
+	"github.com/ntindall/moduluschecking/helpers"
 )
 
 // Represents a UK bank account

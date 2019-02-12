@@ -1,7 +1,7 @@
 package checkers
 
 import (
-	m "github.com/AntoineAugusti/moduluschecking/models"
+	m "github.com/ntindall/moduluschecking/models"
 )
 
 type Exception2Checker struct {

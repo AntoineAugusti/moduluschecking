@@ -1,7 +1,7 @@
 package algorithms
 
 import (
-	m "github.com/AntoineAugusti/moduluschecking/models"
+	m "github.com/ntindall/moduluschecking/models"
 )
 
 // Perform the modulus algorithm with a given modulus

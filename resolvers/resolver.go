@@ -1,8 +1,8 @@
 package resolvers
 
 import (
-	"github.com/AntoineAugusti/moduluschecking/checkers"
-	m "github.com/AntoineAugusti/moduluschecking/models"
+	"github.com/ntindall/moduluschecking/checkers"
+	m "github.com/ntindall/moduluschecking/models"
 )
 
 type Resolver struct {

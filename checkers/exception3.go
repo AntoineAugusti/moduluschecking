@@ -1,7 +1,7 @@
 package checkers
 
 import (
-	m "github.com/AntoineAugusti/moduluschecking/models"
+	m "github.com/ntindall/moduluschecking/models"
 )
 
 // Check if we follow the criteria of the exception 3

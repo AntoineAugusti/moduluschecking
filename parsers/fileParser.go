@@ -2,13 +2,12 @@ package parsers
 
 import (
 	"bufio"
-	"os"
-	"path"
+	"bytes"
 	"strings"
 
-	_ "github.com/AntoineAugusti/moduluschecking/data"
-	"github.com/AntoineAugusti/moduluschecking/helpers"
-	m "github.com/AntoineAugusti/moduluschecking/models"
+	"github.com/ntindall/moduluschecking/data"
+	"github.com/ntindall/moduluschecking/helpers"
+	m "github.com/ntindall/moduluschecking/models"
 )
 
 // Describes the content of a file.
@@ -21,10 +20,10 @@ type LineRecord struct {
 
 // A parser that reads data from the filesystem.
 type FileParser struct {
-	// The path to the weights file.
-	weightsPath string
-	// The path to the substitutions file for sort codes.
-	substitutionsPath string
+	// The weights file
+	weightsBytes []byte
+	// The substitutions file.
+	substitutionsBytes []byte
 	// The actual weights for each sort code.
 	weights map[string]m.SortCodeData
 }
@@ -34,7 +33,7 @@ func (fp FileParser) Substitutions() map[string]string {
 	substitutions := make(map[string]string)
 
 	jobs := make(chan LineRecord)
-	go readFile(fp.substitutionsPath, jobs)
+	go readFile(fp.substitutionsBytes, jobs)
 
 	for lineRecord := range jobs {
 		fields := strings.Split(lineRecord.content, " ")
@@ -50,7 +49,7 @@ func (fp FileParser) Weights() map[string]m.SortCodeData {
 	jobs := make(chan LineRecord)
 	results := make(chan m.SortCodeRange)
 
-	go readFile(fp.weightsPath, jobs)
+	go readFile(fp.weightsBytes, jobs)
 	go parseWeightsLine(jobs, results)
 
 	// Process all the sort code ranges
@@ -136,16 +135,10 @@ func parseWeightsLine(jobs <-chan LineRecord, results chan<- m.SortCodeRange) {
 }
 
 // Read a file and put the content in a channel.
-func readFile(path string, jobs chan<- LineRecord) {
-	file, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
+func readFile(file []byte, jobs chan<- LineRecord) {
 
 	lineNumber := 1
-
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(bytes.NewReader(file))
 	for scanner.Scan() {
 		jobs <- LineRecord{
 			content:    scanner.Text(),
@@ -161,12 +154,12 @@ func readFile(path string, jobs chan<- LineRecord) {
 // Create a new instance of a file parser that satisfies
 // the parser interface.
 func CreateFileParser() m.Parser {
-	goPath := path.Clean(os.Getenv("GOPATH"))
-	dataPath := goPath + "/src/github.com/AntoineAugusti/moduluschecking/data/"
+	weights := data.MustAsset("data/weights.txt")
+	substitutions := data.MustAsset("data/substitutions.txt")
 
 	return FileParser{
-		weightsPath:       dataPath + "weights.txt",
-		substitutionsPath: dataPath + "substitutions.txt",
-		weights:           make(map[string]m.SortCodeData),
+		weightsBytes:       weights,
+		substitutionsBytes: substitutions,
+		weights:            make(map[string]m.SortCodeData),
 	}
 }
