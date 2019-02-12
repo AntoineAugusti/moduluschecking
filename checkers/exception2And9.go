@@ -1,7 +1,7 @@
 package checkers
 
 import (
-	m "github.com/ntindall/moduluschecking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 // Get weights to use for a bank account following the exception 2 or 9.

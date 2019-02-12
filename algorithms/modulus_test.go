@@ -3,7 +3,7 @@ package algorithms
 import (
 	"testing"
 
-	m "github.com/ntindall/moduluschecking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 	"github.com/stretchr/testify/assert"
 )
 

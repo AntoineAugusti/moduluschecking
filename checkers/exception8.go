@@ -1,7 +1,7 @@
 package checkers
 
 import (
-	m "github.com/ntindall/moduluschecking/models"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 type Exception8Checker struct {

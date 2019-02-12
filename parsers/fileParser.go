@@ -5,9 +5,9 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/ntindall/moduluschecking/data"
-	"github.com/ntindall/moduluschecking/helpers"
-	m "github.com/ntindall/moduluschecking/models"
+	"github.com/AntoineAugusti/moduluschecking/data"
+	"github.com/AntoineAugusti/moduluschecking/helpers"
+	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
 // Describes the content of a file.
