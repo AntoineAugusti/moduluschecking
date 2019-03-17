@@ -17,22 +17,22 @@ type SortCodeData struct {
 	LineNumber int
 }
 
-// Does this sort code has got an exception?
+// HasException Does this sort code has got an exception?
 func (s SortCodeData) HasException() bool {
 	return s.ExceptionValue > 0
 }
 
-// Does this sort code follows another rule?
+// HasNext Does this sort code follows another rule?
 func (s SortCodeData) HasNext() bool {
 	return s.Next != nil
 }
 
-// Check if a sort code follows an exception.
+// IsException checks if a sort code follows an exception.
 func (s SortCodeData) IsException(exceptionValue int) bool {
 	return s.HasException() && s.ExceptionValue == exceptionValue
 }
 
-// Check if a sort code follows 2 exceptions.
+// FollowsExceptions checks if a sort code follows 2 exceptions.
 func (s SortCodeData) FollowsExceptions(ex1, ex2 int) bool {
 	is1 := s.IsException(ex1)
 	has2 := s.HasNext() && s.Next.IsException(ex2)

@@ -28,7 +28,7 @@ type FileParser struct {
 	weights map[string]m.SortCodeData
 }
 
-// Get all known sort code substitutions.
+// Substitutions gets all known sort code substitutions.
 func (fp FileParser) Substitutions() map[string]string {
 	substitutions := make(map[string]string)
 
@@ -44,7 +44,7 @@ func (fp FileParser) Substitutions() map[string]string {
 	return substitutions
 }
 
-// Get the weights, exception information and algorithm to use for all known sort codes.
+// Weights gets the weights, exception information and algorithm to use for all known sort codes.
 func (fp FileParser) Weights() map[string]m.SortCodeData {
 	jobs := make(chan LineRecord)
 	results := make(chan m.SortCodeRange)

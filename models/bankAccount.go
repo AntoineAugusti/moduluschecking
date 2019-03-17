@@ -26,7 +26,7 @@ func (b BankAccount) MergeAccountDetails() []int {
 	return append(b.SortCodeSlice(), b.AccountNumberSlice()...)
 }
 
-// Get the integer value from a letter, according to the defined code:
+// NumberAtPosition gets the integer value from a letter, according to the defined code:
 // Letters between u and z select a digit from the sort code
 // Letters between a and h select a digit from the account number
 func (b BankAccount) NumberAtPosition(letter string) int {

@@ -14,13 +14,13 @@ func AddDigits(nb int) int {
 	return nb%10 + nb/10
 }
 
-// Add leading zeros to a number to have a string
+// AddLeadingZerosToNumber adds leading zeros to a number to have a string
 // of length 6
 func AddLeadingZerosToNumber(nb int) string {
 	return AddLeadingZeros(strconv.Itoa(nb), 6)
 }
 
-// Add leading zeros to a string to have a string
+// AddLeadingZeros adds leading zeros to a string to have a string
 // of a desired length
 func AddLeadingZeros(s string, desiredLength int) string {
 	for len(s) < desiredLength {
@@ -58,7 +58,7 @@ func StringSliceToIntSlice(slice []string) (res []int) {
 	return res
 }
 
-// Remove dashes from a string
+// RemoveDashes removes dashes from a string
 func RemoveDashes(s string) string {
 	return strings.Replace(s, "-", "", -1)
 }

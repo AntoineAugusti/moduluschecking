@@ -14,7 +14,7 @@ type Resolver struct {
 	exceptionCheckers map[int]m.Checker
 }
 
-// Check if a bank account number is valid
+// IsValid checks if a bank account number is valid
 func (r Resolver) IsValid(b m.BankAccount) bool {
 	scData := r.weights[b.SortCode]
 	secondCheck := true
