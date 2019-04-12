@@ -4,7 +4,7 @@ import (
 	m "github.com/AntoineAugusti/moduluschecking/models"
 )
 
-// Check if we follow the criteria of the exception 3
+// FollowsException3 checks if we follow the criteria of the exception 3
 func FollowsException3(b m.BankAccount, scData m.SortCodeData) bool {
 	c := b.NumberAtPosition("c")
 

@@ -18,7 +18,7 @@ func (e GeneralChecker) IsValid(b m.BankAccount, sc m.SortCodeData, attempt int)
 	return e.RemainderFromRegularCheck(b, sc) == 0
 }
 
-// Get the remainder of the check
+// RemainderFromRegularCheck gets the remainder of the check
 func (e GeneralChecker) RemainderFromRegularCheck(b m.BankAccount, scData m.SortCodeData) int {
 	switch {
 	case scData.Algorithm == "DBLAL":

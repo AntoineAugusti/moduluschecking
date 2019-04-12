@@ -20,7 +20,7 @@ type SortCodeRange struct {
 	LineNumber int
 }
 
-// Check if a sort code range has got an exception
+// HasException checks if a sort code range has got an exception
 func (sc SortCodeRange) HasException() bool {
 	return sc.ExceptionValue > 0
 }
